@@ -1,4 +1,4 @@
-const multer = require("multer");
+import multer from "multer";
 
 const multerExcelFilter = (req, file, cb) => {
   if (
@@ -26,15 +26,24 @@ const upload = multer({
   fileFilter: multerExcelFilter,
 });
 
-exports.uploadData = upload.single("excel");
+const uploadData = upload.single("excel");
 
-exports.resUpdate = (req, res, next) => {
-  console.log(req.file);
-  console.log(multerStorage);
-  console.log(req.body);
-  res.status(200).json({
-    status: " Success",
-    data: req.file,
-  });
+const resUpdate = (req, res, next) => {
+  if (req.file === undefined) {
+    console.log("Error Loading Excel file");
+    res.status(400).json({
+      status: "Request to load file failed!! Try again!",
+    });
+  } else {
+    console.log(req.file);
+    console.log(multerStorage);
+    console.log(req.body);
+    res.status(200).json({
+      status: " Success",
+      data: req.file,
+    });
+  }
   next();
 };
+
+export { uploadData, resUpdate };

@@ -1,17 +1,18 @@
-const { google } = require("googleapis");
-const fs = require("fs");
+import { google } from "googleapis";
+import fs from "fs";
 
-const oAth2Data = require(`${__dirname}/../cred.json`);
-const catchAsync = require(`${__dirname}/../catchAsync`);
+// import * as oAth2Data from "./../cred.json";
 
-// const CLIENT_ID =
-//   "671984275808-p4o1cmi2qiagnv8s7bglcd0stothvi2m.apps.googleusercontent.com";
-// const CLIENT_SECRET = "8phRW04-85Degq22dS64MjQl";
-// const REDIRECT_URI = "https://developers.google.com/oauthplayground";
+import { catchAsync } from "./../catchAsync.js";
 
-const CLIENT_ID = oAth2Data.web.client_id;
-const CLIENT_SECRET = oAth2Data.web.client_secret;
-const REDIRECT_URI = oAth2Data.web.redirect_uris[0];
+const CLIENT_ID =
+  "671984275808-p4o1cmi2qiagnv8s7bglcd0stothvi2m.apps.googleusercontent.com";
+const CLIENT_SECRET = "8phRW04-85Degq22dS64MjQl";
+const REDIRECT_URI = "https://developers.google.com/oauthplayground";
+
+// const CLIENT_ID = process.env.oAth2Data.web.client_id;
+// const CLIENT_SECRET = process.env.oAth2Data.web.client_secret;
+// const REDIRECT_URI = process.env.oAth2Data.web.redirect_uris[0];
 
 const REFRESH_TOKEN =
   "1//04DZYKSwuVcZoCgYIARAAGAQSNwF-L9IryENcGoaTwk6-GnuLvJJFBa6vY7P1GCQbxNggXNdO4V20eAa5LFlyUwoh3erglgR7QeI";
@@ -29,7 +30,7 @@ const drive = google.drive({
   auth: oauth2Client,
 });
 
-exports.uploadFileToDrive = catchAsync(async (req, res, next) => {
+const uploadFileToDrive = catchAsync(async (req, res, next) => {
   const response = await drive.files.create({
     requestBody: {
       name: "myexcel.xlsx",
@@ -39,7 +40,7 @@ exports.uploadFileToDrive = catchAsync(async (req, res, next) => {
     media: {
       mimeType:
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      body: fs.createReadStream(`${__dirname}/../uploads/myexcel.xlsx`),
+      body: fs.createReadStream("./uploads/myexcel.xlsx"),
     },
   });
   console.log("File has been uploaded\n", response.data);
@@ -66,3 +67,5 @@ exports.uploadFileToDrive = catchAsync(async (req, res, next) => {
   });
   next();
 });
+
+export { uploadFileToDrive };

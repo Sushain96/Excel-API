@@ -1,6 +1,8 @@
 {
+  "type":"module",
   "scripts": {
-    "start": "nodemon server.js"
+    
+    "start": "nodemon --experimental-modules server.mjs"
   },
   "name": "excelapi",
   "version": "1.0.0",
