@@ -1,7 +1,7 @@
-const jwt = require("jsonwebtoken");
-const { promisify } = require("util");
-const User = require(`${__dirname}/../models/userModel`);
-const catchAsync = require(`${__dirname}/../catchAsync`);
+import jwt from "jsonwebtoken";
+import { promisify } from "util";
+import { User } from "./../models/userModel.js";
+import { catchAsync } from "./../catchAsync.js";
 
 class AppError extends Error {
   constructor(message, statusCode) {
@@ -32,7 +32,7 @@ const createSendToken = (user, statusCode, res) => {
   });
 };
 
-exports.signup = catchAsync(async (req, res, next) => {
+const signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     // name: "Sushain",
     // email: "sushain@gmail.com",
@@ -47,7 +47,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.login = catchAsync(async (req, res, next) => {
+const login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
 
   //incomplete fields
@@ -64,7 +64,7 @@ exports.login = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.protect = catchAsync(async (req, res, next) => {
+const protect = catchAsync(async (req, res, next) => {
   //1. Checking if the token exists.
   let token;
   if (
@@ -91,3 +91,5 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
   next();
 });
+
+export { signup, login, protect };

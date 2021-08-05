@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const excelSchema = new mongoose.Schema({}, { strict: false });
 const Excel = mongoose.model("Excel", excelSchema);
 
-module.exports = Excel;
+export { Excel };

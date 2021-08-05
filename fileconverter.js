@@ -1,9 +1,9 @@
-const excelToJson = require("convert-excel-to-json");
-const fs = require("fs");
+import excelToJson from "convert-excel-to-json";
+import fs from "fs";
 
-exports.jsonConverter = (req, res, next) => {
+const jsonConverter = (req, res, next) => {
   const result = excelToJson({
-    source: fs.readFileSync(`${__dirname}/uploads/myexcel.xlsx`),
+    source: fs.readFileSync("./uploads/myexcel.xlsx"),
     header: {
       rows: 1,
     },
@@ -11,6 +11,8 @@ exports.jsonConverter = (req, res, next) => {
       "*": "{{columnHeader}}",
     },
   });
-  fs.writeFileSync(`${__dirname}/output.json`, JSON.stringify(result));
+  fs.writeFileSync("./output.json", JSON.stringify(result));
   next();
 };
+
+export { jsonConverter };
